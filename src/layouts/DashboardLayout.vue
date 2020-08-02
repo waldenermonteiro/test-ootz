@@ -14,12 +14,14 @@
         <v-card class="mx-auto" max-width="400" tile>
           <v-list :dense="true" :three-line="true" :shaped="true" :flat="true">
             <v-subheader><p class="text-center">Create</p></v-subheader>
-            <v-list-item-group v-model="item" color="primary">
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-content>
-                  <v-list-item-title><v-icon>mdi-monitor-dashboard</v-icon> {{ item.title }}</v-list-item-title>
+            <v-list-item-group color="primary">
+              <v-list-item>
+                <v-list-item-content @click="openCreatePanel">
+                  <v-list-item-title><v-icon>mdi-monitor-dashboard</v-icon>Create Panel</v-list-item-title>
                   <v-list-item-subtitle
-                  ><p class="height-subtitle">{{ item.subtitle }}</p></v-list-item-subtitle
+                  ><p class="height-subtitle">
+                    Um quadro é feito de cartões ordenados em listas. Use-o para gerenciar projetos, controlar informações e organizar qualquer coisa.
+                  </p></v-list-item-subtitle
                   >
                 </v-list-item-content>
               </v-list-item>
@@ -31,22 +33,26 @@
         WM
       </v-btn>
     </v-app-bar>
+    <create-panel ref="CreatePanel"></create-panel>
     <router-view></router-view>
   </div>
 </template>
 <script>
+import CreatePanel from '../pages/panels/Create'
 export default {
+  name: 'DashboardLayout',
+  components: {
+    CreatePanel
+  },
   data: () => ({
     menu: false,
-    item: 5,
-    items: [
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: 'Create Panel',
-        subtitle: 'Um quadro é feito de cartões ordenados em listas. Use-o para gerenciar projetos, controlar informações e organizar qualquer coisa.'
-      }
-    ]
-  })
+    item: 5
+  }),
+  methods: {
+    openCreatePanel () {
+      this.$refs.CreatePanel.openModal()
+    }
+  }
 }
 </script>
 <style scoped>
