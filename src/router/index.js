@@ -6,15 +6,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Initial View',
     component: () => import('../layouts/InitialLayout.vue'),
-    children: [{ path: '', component: () => import('../pages/user/Index.vue') }]
+    children: [{ name: 'Initial View', path: '', component: () => import('../pages/user/Index.vue') }]
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
     component: () => import('../layouts/DashboardLayout.vue'),
-    children: [{ path: '', component: () => import('../pages/panels/Index.vue') }]
+    children: [{ name: 'Dashboard', path: '', component: () => import('../pages/panels/List.vue') }]
+  },
+  {
+    path: '/frames',
+
+    component: () => import('../layouts/DashboardLayout.vue'),
+    children: [{ name: 'Frames', path: '', component: () => import('../pages/frames/List.vue') }]
   }
 ]
 
