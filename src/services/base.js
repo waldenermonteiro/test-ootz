@@ -9,8 +9,8 @@ export default class Base {
 
   list = async ($params = '') => {
     try {
-      const response = await this.service.get(this.api, { params: $params })
-      return response
+      const { data } = await this.service.get(this.api, { params: $params })
+      return data
     } catch (error) {
       throw statusResponse(error, 'list')
     }
