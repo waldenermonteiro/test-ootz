@@ -1,4 +1,4 @@
-import { HTTPClient } from '../boot/axios'
+import { HTTPClient } from '../plugins/axios'
 import { statusResponse } from './responseService'
 export default class Base {
   constructor (api) {
