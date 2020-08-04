@@ -4,11 +4,12 @@ import router from './router'
 import store from './store'
 import Vuelidate from 'vuelidate'
 import VueLoading from 'vuejs-loading-plugin'
-import baseVuex from './boot/baseVuex'
 import vuetify from './plugins/vuetify'
+import BaseVuex from './plugins/baseVuex'
 Vue.use(Vuelidate)
-Vue.use(VueLoading, { text: 'Carregando' })
-Vue.use(baseVuex)
+Vue.use(VueLoading, { text: 'Loading' })
+Vue.use(BaseVuex)
+
 Vue.config.productionTip = false
 new Vue({
   router,
