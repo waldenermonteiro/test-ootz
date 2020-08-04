@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="deep-purple accent-4" dense dark>
+    <v-app-bar color="deep-purple" dense dark>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-spacer><p class="text-center ">Personal Board</p></v-spacer>
@@ -12,7 +12,7 @@
           </v-btn>
         </template>
         <v-card class="mx-auto" max-width="400" tile>
-          <v-list :dense="true" :three-line="true" :shaped="true" :flat="true">
+          <v-list :dense="true" :three-line="true" :flat="true">
             <v-subheader><p class="text-center">Create</p></v-subheader>
             <v-list-item-group color="primary">
               <v-list-item>
