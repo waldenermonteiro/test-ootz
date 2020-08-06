@@ -13,7 +13,7 @@
         </transition-group>
       </draggable>
       <div class="input-task" v-if="enableCreate">
-        <v-textarea class="pb-2" hide-details solo label="Enter a title for this task"></v-textarea>
+        <v-textarea v-model="form.title" class="pb-2" hide-details solo label="Enter a title for this task"></v-textarea>
         <v-btn @click="createTask(list)" color="success" small>Add task</v-btn>
         <v-btn @click="enableCreate = false" small icon><v-icon>mdi-close</v-icon></v-btn>
       </div>
@@ -37,19 +37,31 @@ export default {
   },
   data () {
     return {
-      enableCreate: false
+      enableCreate: false,
+      formCopy: {
+        title: ''
+      },
+      form: { ...this.formCopy }
     }
   },
   methods: {
     createTask (list) {
-      const task = { order: list.length, title: 'My fifth  todo', description: 'todo', frame_id: this.frame.id, open: true }
-      this.$createOrUpdate({
-        urlDispatch: 'Task/create',
-        params: task,
-        callback: () => {
-          this.$list({ urlDispatch: 'Frame/list' })
-        }
-      })
+      if (this.form.title !== '') {
+        const task = { order: list.length, title: this.form.title, description: 'todo', frame_id: this.frame.id, open: true }
+        this.$createOrUpdate({
+          urlDispatch: 'Task/create',
+          params: task,
+          callback: () => {
+            this.$list({ urlDispatch: 'Frame/list' })
+            this.clearForm()
+          }
+        })
+      }
+    },
+    clearForm () {
+      this.form = {
+        ...this.formCopy
+      }
     }
   }
 }
