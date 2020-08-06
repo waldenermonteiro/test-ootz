@@ -18,7 +18,7 @@ export const create = async ({ commit }, obj) => {
 }
 export const update = async ({ commit }, obj) => {
   try {
-    await FrameService.update(obj, obj.id)
+    await FrameService.updateNoId(obj)
   } catch (error) {
     throw error
   }
