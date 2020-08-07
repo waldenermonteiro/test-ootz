@@ -19,7 +19,7 @@
             </v-btn>
           </v-toolbar>
           <v-card class="list-group-item">
-            <list-tasks :list="frame.todos" :frame="frame"></list-tasks>
+            <list-tasks :frames="framesCustom" :list="frame.todos" :frame="frame"></list-tasks>
           </v-card>
         </v-col>
         <v-col md="3" :key="1000" @mouseover="disabledDraggable(true)">
@@ -43,7 +43,6 @@
         </v-col>
       </transition-group>
     </draggable>
-    {{ framesCustom }}
   </v-container>
 </template>
 
