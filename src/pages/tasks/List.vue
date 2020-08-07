@@ -80,12 +80,15 @@ export default {
           if (task.frame_id !== frame.id) {
             task.frame_id = frame.id
           }
-          this.$createOrUpdate({
-            urlDispatch: 'Task/update',
-            params: task
-          })
+          this.updateFrame(task)
         }
       }
+    },
+    updateFrame (task) {
+      this.$createOrUpdate({
+        urlDispatch: 'Task/update',
+        params: task
+      })
     }
   }
 }
