@@ -18,7 +18,7 @@ export const create = async ({ commit }, obj) => {
 }
 export const update = async ({ commit }, obj) => {
   try {
-    await TaskService.update(obj, obj.id)
+    await TaskService.updateNoId(obj)
   } catch (error) {
     throw error
   }
