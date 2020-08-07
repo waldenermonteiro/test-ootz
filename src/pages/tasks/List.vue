@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-list color="#f6f6f4" three-line>
-      <draggable :list="list" ghost-class="ghost" @start="dragging = true" @end="dragging = false" v-bind="{ group: 'tasks-group' }">
+      <draggable :list="list" ghost-class="ghost" :move="checkMove" @start="dragging = true" @end="terminateMove" v-bind="{ group: 'tasks-group' }">
         <transition-group class="list-custom" type="transition" name="flip-list">
           <v-list-item v-for="task in list" :key="task.id" class="list-group-item">
             <v-card class="v-card-custom">
@@ -29,10 +29,13 @@ export default {
   },
   props: {
     list: {
-      required: false
+      required: true
     },
     frame: {
-      required: false
+      required: true
+    },
+    frames: {
+      required: true
     }
   },
   data () {
@@ -41,7 +44,9 @@ export default {
       formCopy: {
         title: ''
       },
-      form: { ...this.formCopy }
+      form: { ...this.formCopy },
+      pastFrame: {},
+      presentFrame: {}
     }
   },
   methods: {
@@ -60,7 +65,26 @@ export default {
     },
     clearForm () {
       this.form = {
-        ...this.formCopy
+        ...this.formCop
+      }
+    },
+    checkMove (e) {
+      this.pastFrame = e.draggedContext.element
+      this.presentFrame = e.relatedContext.element
+    },
+    terminateMove () {
+      const pastPresentFrames = this.frames.filter(frame => frame.id === this.pastFrame.frame_id || frame.id === this.presentFrame.frame_id)
+      for (const frame of pastPresentFrames) {
+        for (const [index, task] of frame.todos.entries()) {
+          task.order = index
+          if (task.frame_id !== frame.id) {
+            task.frame_id = frame.id
+          }
+          this.$createOrUpdate({
+            urlDispatch: 'Task/update',
+            params: task
+          })
+        }
       }
     }
   }
