@@ -6,17 +6,27 @@
       :disabled="disabled"
       ghost-class="ghost"
       @start="dragging = true"
-      @end="dragging = false"
+      @end="terminateMove"
       v-bind="{ group: 'frames-group' }"
     >
       <transition-group class="row" type="transition" name="flip-list">
         <v-col @mouseover="disabledDraggable(false)" v-for="frame in framesCustom" :key="frame.order" xs="6" sm="4" md="3" class="list-group-item">
-          <v-toolbar color="deep-purple" dark dense>
+          <v-toolbar color="deep-purple" dark dense @click="test()">
             <v-toolbar-title>{{ frame.title }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
+            <v-menu bottom left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn dark icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list>
+                <v-list-item v-for="(option, i) in options" :key="i">
+                  <v-list-item-title>{{ option.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-toolbar>
           <v-card class="list-group-item">
             <list-tasks :frames="framesCustom" :list="frame.todos" :frame="frame"></list-tasks>
@@ -58,44 +68,15 @@ export default {
     ListTasks
   },
   data: () => ({
-    lists: [
-      {
-        id: 0,
-        title: 'To do',
-        items: [
-          { id: 0, title: 'Jason Oner' },
-          { id: 1, title: 'Travis Howard' },
-          { id: 2, title: 'Ali Connors' },
-          { id: 3, title: 'Cindy Baker' }
-        ]
-      },
-      {
-        id: 1,
-        title: 'Doing',
-        items: [
-          { id: 4, title: 'Teste nome 1' },
-          { id: 5, title: 'Teste nome 2' },
-          { id: 6, title: 'Teste nome 3' },
-          { id: 7, title: 'Teste nome 4' }
-        ]
-      },
-      {
-        id: 2,
-        title: 'Done',
-        items: [
-          { id: 4, title: 'Teste nome 1' },
-          { id: 5, title: 'Teste nome 2' },
-          { id: 6, title: 'Teste nome 3' },
-          { id: 7, title: 'Teste nome 4' }
-        ]
-      }
-    ],
+    options: [{ title: 'Delete Frame' }],
     framesCustom: [],
     disabled: false,
     inputVisible: false,
     form: {
       title: ''
-    }
+    },
+    pastFrame: {},
+    presentFrame: {}
   }),
   computed: {
     ...mapState('Frame', ['frames'])
@@ -114,10 +95,12 @@ export default {
     })
   },
   methods: {
-    checkMove () {
-      setTimeout(() => {
-        this.updateFrames()
-      }, 1000)
+    checkMove (e) {
+      this.pastFrame = e.draggedContext.element
+      this.presentFrame = e.relatedContext.element
+    },
+    terminateMove () {
+      this.updateFrames()
     },
     disabledDraggable (value) {
       this.disabled = value
