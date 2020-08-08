@@ -9,7 +9,7 @@
       @end="terminateMove"
       v-bind="{ group: 'frames-group' }"
     >
-      <transition-group class="row" type="transition" name="flip-list">
+      <transition-group ref="scroll" class="row flex-nowrap overflow-auto" style="height:100%" type="transition" name="flip-list">
         <v-col @mouseover="disabledDraggable(false)" v-for="frame in framesCustom" :key="frame.order" xs="6" sm="4" md="3" class="list-group-item">
           <v-toolbar color="deep-purple" dark dense>
             <v-toolbar-title @click="test()">{{ frame.title }}</v-toolbar-title>
@@ -22,8 +22,8 @@
               </template>
 
               <v-list>
-                <v-list-item style="cursor:pointer" v-for="(option, i) in options" :key="i">
-                  <v-list-item-title @click="deleteFrame(frame)">{{ option.title }}</v-list-item-title>
+                <v-list-item style="cursor:pointer" v-for="(option, i) in options" :key="i" @click="deleteFrame(frame)">
+                  <v-list-item-title>{{ option.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -114,9 +114,17 @@ export default {
         urlDispatch: 'Frame/create',
         params: frame,
         callback: () => {
-          this.$list({ urlDispatch: 'Frame/list' })
           this.clearForm()
           this.activateTextArea(false)
+          this.$list({
+            urlDispatch: 'Frame/list',
+            callback: () => {
+              setTimeout(() => {
+                const objDiv = this.$refs.scroll.$el
+                objDiv.scrollLeft += objDiv.scrollWidth
+              }, 500)
+            }
+          })
         }
       })
     },
@@ -130,7 +138,6 @@ export default {
       }
     },
     deleteFrame (frame) {
-      console.log(frame)
       this.$remove({
         urlDispatch: 'Frame/remove',
         params: frame,
