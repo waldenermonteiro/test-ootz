@@ -25,7 +25,7 @@ export const update = async ({ commit }, obj) => {
 }
 export const remove = async ({ commit }, obj) => {
   try {
-    await FrameService.remove(obj._id)
+    await FrameService.remove(obj.id)
   } catch (error) {
     throw error
   }
