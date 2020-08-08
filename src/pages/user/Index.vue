@@ -18,8 +18,8 @@
         </v-row>
       </v-col>
       <v-col class="mb-1" sm="4" md="4" lg="4">
-        <v-text-field @keyup.enter="redirectToDashbord()" label="Enter with your username" hide-details="auto" append-icon="user" v-model="test"></v-text-field>
-        <v-btn class="mt-3" depressed color="primary" to="/dashboard">Save and Continue</v-btn>
+        <v-text-field @keyup.enter="saveUser(form.name)" label="Enter with your username" hide-details="auto" append-icon="user" v-model="form.name"></v-text-field>
+        <v-btn class="mt-3" depressed color="primary" @click="saveUser(form.name)">Save and Continue</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -30,9 +30,16 @@ export default {
   name: 'HelloWorld',
 
   data: () => ({
-    test: ''
+    form: {
+      name: ''
+    }
   }),
   methods: {
+    saveUser (name) {
+      localStorage.setItem('user', JSON.stringify({ name: name }))
+      this.redirectToDashbord()
+    },
+
     redirectToDashbord () {
       this.$router.push('/dashboard')
     }
