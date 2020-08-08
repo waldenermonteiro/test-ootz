@@ -11,10 +11,10 @@
     >
       <transition-group class="row" type="transition" name="flip-list">
         <v-col @mouseover="disabledDraggable(false)" v-for="frame in framesCustom" :key="frame.order" xs="6" sm="4" md="3" class="list-group-item">
-          <v-toolbar color="deep-purple" dark dense @click="test()">
-            <v-toolbar-title>{{ frame.title }}</v-toolbar-title>
+          <v-toolbar color="deep-purple" dark dense>
+            <v-toolbar-title @click="test()">{{ frame.title }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-menu bottom left>
+            <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn dark icon v-bind="attrs" v-on="on">
                   <v-icon>mdi-dots-horizontal</v-icon>
@@ -22,8 +22,8 @@
               </template>
 
               <v-list>
-                <v-list-item v-for="(option, i) in options" :key="i">
-                  <v-list-item-title>{{ option.title }}</v-list-item-title>
+                <v-list-item style="cursor:pointer" v-for="(option, i) in options" :key="i">
+                  <v-list-item-title @click="deleteFrame(frame)">{{ option.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -128,6 +128,18 @@ export default {
           params: frame
         })
       }
+    },
+    deleteFrame (frame) {
+      console.log(frame)
+      this.$remove({
+        urlDispatch: 'Frame/remove',
+        params: frame,
+        callback: () => {
+          this.$list({ urlDispatch: 'Frame/list' })
+          this.clearForm()
+          this.activateTextArea(false)
+        }
+      })
     },
     clearForm () {
       this.form.title = ''
